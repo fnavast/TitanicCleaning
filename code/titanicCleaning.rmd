@@ -1,0 +1,154 @@
+---
+title: "Tipología y ciclo de vida de los datos" 
+subtitle: "Práctica 2 – Limpieza y análisis de datos"
+author: 
+- "Francisco de Borja Navas Torres"
+- "Álvaro de la Fuente Díaz"
+date: "Junio 2021"
+output:
+  html_document:
+    highlight: default
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 2
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
+---
+
+
+```{r load_libraries, include=FALSE}
+library(dplyr)
+```
+
+******
+# Introducción
+******
+
+En esta segunda práctica de la asignatura de Tipología y ciclo de vida de los datos, vamos a tratar de limpiar y analizar los datos contenidos en el dataset 'titanic.csv'. Este dataset contiene información sobre sobre los pasajeros que abordaron en el titanic desde los diferentes puertos en los que atracó.
+
+
+******
+# Descripción del dataset
+******
+
+xxxxxxxx
+
+
+******
+# Integración y selección de los datos de interés a analizar
+******
+
+¿Borrar campo Cabin?
+
+
+******
+# Limpieza de los datos
+******
+
+El primer paso para poder realizar cualquier análisis sobre la muestra es realizar la lectura de los datos. Para ello, vamos a cargar el conjunto de datos almacenado en el fichero 'titanic_all.csv' y comprobar que R interpreta correctamente los tipos de los datos.
+
+```{r, echo=TRUE}
+# Cargamos el fichero de datos
+titanic_data <- read.csv('../data/titanic_train.csv',stringsAsFactors = FALSE)
+
+# Primeros registros del dataset
+head(titanic_data)
+
+# Verificamos la estructura del conjunto de datos
+str(titanic_data)
+
+#Estadísticas básicas
+summary(titanic_data)
+```
+
+Podemos ver que el dataset está compuesto por 1309 registros y 12 variables. En el apartado anterior, vimos que los atributos 'PassengerId', 'Name' y 'Ticket' no son relevantes de cara a nuestro estudio por lo que vamos a eliminarlos de la muestra.
+
+```{r, echo=TRUE}
+# Seleccionamos las variables relevantes
+titanic_data <- titanic_data[c('Survived', 'Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Cabin', 'Embarked')]
+str(titanic_data)
+```
+
+
+## Elementos vacíos
+
+El primer paso del proceso de limpieza de los datos es el de detectar y corregir los posibles elementos vacíos. De esta forma nos aseguraremos que todos los registros del dataset están informados.
+
+```{r, echo=TRUE}
+# Valores perdidos
+colSums(is.na(titanic_data))
+colSums(titanic_data=="")
+```
+
+Vemos que en el...
+
+```{r, echo=TRUE}
+# Sustituimos los valores vacíos de la variable 'Age' por la media
+titanic_data$Age[is.na(titanic_data$Age)] <- mean(titanic_data$Age,na.rm=T)
+
+# Sustituimos los valores vacíos de la variable 'Embarked' por el valor U (unknown)
+titanic_data$Embarked[titanic_data$Embarked==""]="U"
+```
+
+Comprobamos que se han corregido los valores perdidos.
+
+```{r, echo=TRUE}
+# Valores perdidos
+colSums(is.na(titanic_data))
+colSums(titanic_data=="")
+```
+
+## Valores extremos
+
+```{r,eval=TRUE,echo=TRUE}
+# Realizamos un diagrama de caja para comprobar si existen valores atípicos
+boxplot(titanic_data$"Fare",main="Box plot", col="gray")
+```
+
+Vemos que existe un valor extremo de 512,33. Reemplazamos este valor por la media del resto.
+
+```{r,eval=TRUE,echo=TRUE}
+# Reemplazamos el valor extremo en la variable 'Fare' por la media del resto
+mean_fare <- mean(titanic_data$Fare[titanic_data$Fare < 500])
+titanic_data$Fare[titanic_data$Fare > 500] <- mean_fare
+```
+
+
+******
+# Análisis de los datos
+******
+
+## Selección de los grupos de datos a analizar
+
+xxxxxxxxx
+
+
+## Comprobación de la normalidad y homogeneidad de la varianza 
+
+xxxxxxxx
+
+
+## Análisis estadístico del dataset
+
+xxxxxxxxx
+
+
+******
+# Representación gráfica de los resultados
+******
+
+xxxxxxxxxxx
+
+
+******
+# Conclusiones
+******
+
+xxxxxxxxxxx
+
+
+
+
+
