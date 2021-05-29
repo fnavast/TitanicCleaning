@@ -197,12 +197,57 @@ summary(titanic_data)
 
 ## Selección de los grupos de datos a analizar
 
-xxxxxxxxx
+En este apartado vamos a seleccionar los grupos de datos presentes en el dataset, que vamos a utilizar durante el análisis posterior.
+
+De entro de todos campos, vamos a seleccionar los atributos referentes al sexo del pasajero, la clase en la que viajaban, el puerto en el que embarcaron y si consiguieron sobrevivir al accidente.
+
+```{r,eval=TRUE,echo=TRUE}
+# Agrupación por sexo
+titanic_data.female <- titanic_data[titanic_data$Sex == 'female',]
+titanic_data.male <- titanic_data[titanic_data$Sex == 'male',]
+
+# Agrupación por clase
+titanic_data.class_1 <- titanic_data[titanic_data$Pclase == '1',]
+titanic_data.class_2 <- titanic_data[titanic_data$Pclass == '2',]
+titanic_data.class_3 <- titanic_data[titanic_data$Pclass == '3',]
+
+# Agrupación por supervivencia
+titanic_data.survived_no <- titanic_data[titanic_data$Survived == '0',]
+titanic_data.survived_yes <- titanic_data[titanic_data$Survived == '1',]
+
+# Agrupación por el puerto de embarque
+titanic_data.embarked_c <- titanic_data[titanic_data$Embarked == 'C',]
+titanic_data.embarked_q <- titanic_data[titanic_data$Embarked == 'Q',]
+titanic_data.embarked_s <- titanic_data[titanic_data$Embarked == 'S',]
+titanic_data.embarked_u <- titanic_data[titanic_data$Embarked == 'U',]
+```
+
 
 
 ## Comprobación de la normalidad y homogeneidad de la varianza 
 
-xxxxxxxx
+Vamos a comprobar la normalidad de las variables cuantitativas presentes en la muestra. Para ello, vamos a emplear la prueba de normalidad de Anderson-Darling. Vamos a definir un valor alfa de 0,05 de manera que si el p-valor obtenido para cada variable en el análisis es superior al valor de alfa, podemos afirmar que esta variable sigue una distribución normal.
+
+
+```{r,eval=TRUE,echo=TRUE}
+library(nortest)
+
+alpha = 0.05
+col.names = colnames(titanic_data)
+
+for (i in 1:ncol(titanic_data)) {
+  if (i == 1) cat("Variables que no siguen una distribución normal:\n")
+  if (is.integer(titanic_data[,i]) | is.numeric(titanic_data[,i])) {
+    p_val = ad.test(titanic_data[,i])$p.value
+    if (p_val < alpha) {
+      cat(col.names[i])
+      # Format output
+      if (i < ncol(titanic_data) - 1) cat(", ")
+      if (i %% 3 == 0) cat("\n")
+    }
+  }
+}
+```
 
 
 ## Análisis estadístico del dataset
@@ -213,8 +258,6 @@ xxxxxxxxx
 ******
 # Representación gráfica de los resultados
 ******
-
-xxxxxxxxxxx
 
 
 ******

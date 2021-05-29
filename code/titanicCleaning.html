@@ -649,11 +649,49 @@ summary(titanic_data)</code></pre>
 <hr />
 <div id="selección-de-los-grupos-de-datos-a-analizar" class="section level2">
 <h2><span class="header-section-number">5.1</span> Selección de los grupos de datos a analizar</h2>
-<p>xxxxxxxxx</p>
+<p>En este apartado vamos a seleccionar los grupos de datos presentes en el dataset, que vamos a utilizar durante el análisis posterior.</p>
+<p>De entro de todos campos, vamos a seleccionar los atributos referentes al sexo del pasajero, la clase en la que viajaban, el puerto en el que embarcaron y si consiguieron sobrevivir al accidente.</p>
+<pre class="r"><code># Agrupación por sexo
+titanic_data.female &lt;- titanic_data[titanic_data$Sex == &#39;female&#39;,]
+titanic_data.male &lt;- titanic_data[titanic_data$Sex == &#39;male&#39;,]
+
+# Agrupación por clase
+titanic_data.class_1 &lt;- titanic_data[titanic_data$Pclase == &#39;1&#39;,]
+titanic_data.class_2 &lt;- titanic_data[titanic_data$Pclass == &#39;2&#39;,]
+titanic_data.class_3 &lt;- titanic_data[titanic_data$Pclass == &#39;3&#39;,]
+
+# Agrupación por supervivencia
+titanic_data.survived_no &lt;- titanic_data[titanic_data$Survived == &#39;0&#39;,]
+titanic_data.survived_yes &lt;- titanic_data[titanic_data$Survived == &#39;1&#39;,]
+
+# Agrupación por el puerto de embarque
+titanic_data.embarked_c &lt;- titanic_data[titanic_data$Embarked == &#39;C&#39;,]
+titanic_data.embarked_q &lt;- titanic_data[titanic_data$Embarked == &#39;Q&#39;,]
+titanic_data.embarked_s &lt;- titanic_data[titanic_data$Embarked == &#39;S&#39;,]
+titanic_data.embarked_u &lt;- titanic_data[titanic_data$Embarked == &#39;U&#39;,]</code></pre>
 </div>
 <div id="comprobación-de-la-normalidad-y-homogeneidad-de-la-varianza" class="section level2">
 <h2><span class="header-section-number">5.2</span> Comprobación de la normalidad y homogeneidad de la varianza</h2>
-<p>xxxxxxxx</p>
+<p>Vamos a comprobar la normalidad de las variables cuantitativas presentes en la muestra. Para ello, vamos a emplear la prueba de normalidad de Anderson-Darling. Vamos a definir un valor alfa de 0,05 de manera que si el p-valor obtenido para cada variable en el análisis es superior al valor de alfa, podemos afirmar que esta variable sigue una distribución normal.</p>
+<pre class="r"><code>library(nortest)
+
+alpha = 0.05
+col.names = colnames(titanic_data)
+
+for (i in 1:ncol(titanic_data)) {
+  if (i == 1) cat(&quot;Variables que no siguen una distribución normal:\n&quot;)
+  if (is.integer(titanic_data[,i]) | is.numeric(titanic_data[,i])) {
+    p_val = ad.test(titanic_data[,i])$p.value
+    if (p_val &lt; alpha) {
+      cat(col.names[i])
+      # Format output
+      if (i &lt; ncol(titanic_data) - 1) cat(&quot;, &quot;)
+      if (i %% 3 == 0) cat(&quot;\n&quot;)
+    }
+  }
+}</code></pre>
+<pre><code>## Variables que no siguen una distribución normal:
+## Age, Fare,</code></pre>
 </div>
 <div id="análisis-estadístico-del-dataset" class="section level2">
 <h2><span class="header-section-number">5.3</span> Análisis estadístico del dataset</h2>
@@ -664,7 +702,6 @@ summary(titanic_data)</code></pre>
 <div id="representación-gráfica-de-los-resultados" class="section level1">
 <h1><span class="header-section-number">6</span> Representación gráfica de los resultados</h1>
 <hr />
-<p>xxxxxxxxxxx</p>
 <hr />
 </div>
 <div id="conclusiones" class="section level1">
