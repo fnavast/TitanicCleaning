@@ -30,15 +30,50 @@ En esta segunda práctica de la asignatura de Tipología y ciclo de vida de los 
 
 
 ******
-# Descripción del dataset
+# Descripción del dataset. ¿Por qué es importante y qué pregunta/problema pretende responder?
 ******
 
-xxxxxxxx
+El dataset elegido comprende información sobre el naufragio del Titanic, que nos permite conocer según una serie de características de los pasajeros que veremos a continuación si sobrevivió o no al accidente. El dataset costa de 891 ocurrencias para un total de 12 variables y lo hemos obtenido de la web de kaggle (https://www.kaggle.com/c/titanic).
+
+Las variables contenidas en el dataset son las siguientes:
+
+* PassengerId: identificador numérico del pasajero que embarcó en el Titanic
+* Survived: Indicador de si el pasajero sobrevivió al accidente del Titanic. 
+  + El valor “0” se corresponde con que “No” sobrevivió.
+  + El valor “1” corresponde con que “Sí” sobrevivió.
+* Pclass: Indicador del tipo de billete del pasajero. 
+  + 1 = Primera clase
+  + 2 = Segunda clase
+  + 3 = Tercera clase
+* Name: nombre del pasajero, con el formato “Apellido, Nombre”
+* Sex: sexo del pasajero. Los posibles valores son “male” y “female”.
+* Age: edad del pasajero.
+* SibSp: número de hermanos/cónyuge del pasajero a bordo.
+* Parch: número de padres/hijos del pasajero a bordo.
+* Ticket: identificador del billete.
+* Fare: precio del billete
+* Cabin: identificador del camarote del pasajero.
+* Embarked: puerto en el que embarcó el pasajero:
+  + C = Cherbourg
+  + Q = Queenstown
+  + S = Southampton
+
+El problema que tenemos como objetivo dar solución mediante el análisis de este dataset es ver qué variables del dataset tienen mayor influencia sobre el evento de supervivencia del pasajero durante el conocido accidente del crucero Titanic. Con esta solución, podremos crear modelos predictivos que nos permitan conocer dependiendo de las características de un hipotético pasajero cuál es la probabilidad de que hubiese sobrevivido al accidente. Esta información no sólo es interesante desde un punto de vista “curioso” sobre este accidente que ocurrió años atrás, sino que desde el punto de vista proyectivo puede ayudar al conocimiento de ingenieros navales para mejorar en el diseño y construcción de grandes transatlánticos que sean más seguros en accidentes de índole similar como alcances de grandes objetos sobre buques.
+
 
 
 ******
 # Integración y selección de los datos de interés a analizar
 ******
+
+Desde el punto de vista de la integración nos hemos encontrado que en la fuente tenemos separado en dos ficheros independientes este dataset (uno para entrenamiento y otro para set), ya que está preparado para la ejecución de modelos. Por tanto, como primer paso y con el objetivo de disponer de la totalidad de muestras para el análisis que estamos realizando, hemos realizado una concatenación de las ocurrencias de ambos datasets.
+
+Desde el punto de vista de la selección descartamos aplicar cualquier técnica de filtrado porque nos interesa realizar el análisis sobre el conjunto entero de ocurrencias, sin discriminar cualquier tipo de muestra dentro del dataset. Por otro lado, no disponemos de ninguna variable que proceda de algún cálculo sobre otras, ni vemos relevante poder realizar cálculo alguno sobre más de una variable del dataset para intentar reducir el número de atributos sin que afecte en la representatividad de todas las variables en conjunto.
+
+Basado en el análisis del total de atributos, si que vemos relevante descartar las variables PassengerId, Name y Ticket, puesto que son identificadores o descriptivos propios de cada uno de los pasajeros pero que no nos van a ayudar al análisis que nos compete puesto que el valor de cada uno de estos atributos no presenta ningún tipo de agrupación sobre todos los demás.
+
+Por último, vamos a realizar un análisis sobre al correlación que existe entre todo el monto resultante de variables con el objetivo de descartar algunas de ellas en el caso de que nos encontremos con un elevado índice de correlación.
+
 
 ¿Borrar campo Cabin?
 

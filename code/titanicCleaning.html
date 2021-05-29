@@ -401,7 +401,7 @@ summary {
 <div id="TOC">
 <ul>
 <li><a href="#introducción"><span class="toc-section-number">1</span> Introducción</a></li>
-<li><a href="#descripción-del-dataset"><span class="toc-section-number">2</span> Descripción del dataset</a></li>
+<li><a href="#descripción-del-dataset.-por-qué-es-importante-y-qué-preguntaproblema-pretende-responder"><span class="toc-section-number">2</span> Descripción del dataset. ¿Por qué es importante y qué pregunta/problema pretende responder?</a></li>
 <li><a href="#integración-y-selección-de-los-datos-de-interés-a-analizar"><span class="toc-section-number">3</span> Integración y selección de los datos de interés a analizar</a></li>
 <li><a href="#limpieza-de-los-datos"><span class="toc-section-number">4</span> Limpieza de los datos</a><ul>
 <li><a href="#elementos-vacíos"><span class="toc-section-number">4.1</span> Elementos vacíos</a></li>
@@ -424,15 +424,49 @@ summary {
 <p>En esta segunda práctica de la asignatura de Tipología y ciclo de vida de los datos, vamos a tratar de limpiar y analizar los datos contenidos en el dataset ‘titanic.csv’. Este dataset contiene información sobre sobre los pasajeros que abordaron en el titanic desde los diferentes puertos en los que atracó.</p>
 <hr />
 </div>
-<div id="descripción-del-dataset" class="section level1">
-<h1><span class="header-section-number">2</span> Descripción del dataset</h1>
+<div id="descripción-del-dataset.-por-qué-es-importante-y-qué-preguntaproblema-pretende-responder" class="section level1">
+<h1><span class="header-section-number">2</span> Descripción del dataset. ¿Por qué es importante y qué pregunta/problema pretende responder?</h1>
 <hr />
-<p>xxxxxxxx</p>
+<p>El dataset elegido comprende información sobre el naufragio del Titanic, que nos permite conocer según una serie de características de los pasajeros que veremos a continuación si sobrevivió o no al accidente. El dataset costa de 891 ocurrencias para un total de 12 variables y lo hemos obtenido de la web de kaggle (<a href="https://www.kaggle.com/c/titanic" class="uri">https://www.kaggle.com/c/titanic</a>).</p>
+<p>Las variables contenidas en el dataset son las siguientes:</p>
+<ul>
+<li>PassengerId: identificador numérico del pasajero que embarcó en el Titanic</li>
+<li>Survived: Indicador de si el pasajero sobrevivió al accidente del Titanic.
+<ul>
+<li>El valor “0” se corresponde con que “No” sobrevivió.</li>
+<li>El valor “1” corresponde con que “Sí” sobrevivió.</li>
+</ul></li>
+<li>Pclass: Indicador del tipo de billete del pasajero.
+<ul>
+<li>1 = Primera clase</li>
+<li>2 = Segunda clase</li>
+<li>3 = Tercera clase</li>
+</ul></li>
+<li>Name: nombre del pasajero, con el formato “Apellido, Nombre”</li>
+<li>Sex: sexo del pasajero. Los posibles valores son “male” y “female”.</li>
+<li>Age: edad del pasajero.</li>
+<li>SibSp: número de hermanos/cónyuge del pasajero a bordo.</li>
+<li>Parch: número de padres/hijos del pasajero a bordo.</li>
+<li>Ticket: identificador del billete.</li>
+<li>Fare: precio del billete</li>
+<li>Cabin: identificador del camarote del pasajero.</li>
+<li>Embarked: puerto en el que embarcó el pasajero:
+<ul>
+<li>C = Cherbourg</li>
+<li>Q = Queenstown</li>
+<li>S = Southampton</li>
+</ul></li>
+</ul>
+<p>El problema que tenemos como objetivo dar solución mediante el análisis de este dataset es ver qué variables del dataset tienen mayor influencia sobre el evento de supervivencia del pasajero durante el conocido accidente del crucero Titanic. Con esta solución, podremos crear modelos predictivos que nos permitan conocer dependiendo de las características de un hipotético pasajero cuál es la probabilidad de que hubiese sobrevivido al accidente. Esta información no sólo es interesante desde un punto de vista “curioso” sobre este accidente que ocurrió años atrás, sino que desde el punto de vista proyectivo puede ayudar al conocimiento de ingenieros navales para mejorar en el diseño y construcción de grandes transatlánticos que sean más seguros en accidentes de índole similar como alcances de grandes objetos sobre buques.</p>
 <hr />
 </div>
 <div id="integración-y-selección-de-los-datos-de-interés-a-analizar" class="section level1">
 <h1><span class="header-section-number">3</span> Integración y selección de los datos de interés a analizar</h1>
 <hr />
+<p>Desde el punto de vista de la integración nos hemos encontrado que en la fuente tenemos separado en dos ficheros independientes este dataset (uno para entrenamiento y otro para set), ya que está preparado para la ejecución de modelos. Por tanto, como primer paso y con el objetivo de disponer de la totalidad de muestras para el análisis que estamos realizando, hemos realizado una concatenación de las ocurrencias de ambos datasets.</p>
+<p>Desde el punto de vista de la selección descartamos aplicar cualquier técnica de filtrado porque nos interesa realizar el análisis sobre el conjunto entero de ocurrencias, sin discriminar cualquier tipo de muestra dentro del dataset. Por otro lado, no disponemos de ninguna variable que proceda de algún cálculo sobre otras, ni vemos relevante poder realizar cálculo alguno sobre más de una variable del dataset para intentar reducir el número de atributos sin que afecte en la representatividad de todas las variables en conjunto.</p>
+<p>Basado en el análisis del total de atributos, si que vemos relevante descartar las variables PassengerId, Name y Ticket, puesto que son identificadores o descriptivos propios de cada uno de los pasajeros pero que no nos van a ayudar al análisis que nos compete puesto que el valor de cada uno de estos atributos no presenta ningún tipo de agrupación sobre todos los demás.</p>
+<p>Por último, vamos a realizar un análisis sobre al correlación que existe entre todo el monto resultante de variables con el objetivo de descartar algunas de ellas en el caso de que nos encontremos con un elevado índice de correlación.</p>
 <p>¿Borrar campo Cabin?</p>
 <hr />
 </div>
