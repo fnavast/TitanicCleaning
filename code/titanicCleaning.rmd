@@ -47,7 +47,7 @@ xxxxxxxx
 # Limpieza de los datos
 ******
 
-El primer paso para poder realizar cualquier análisis sobre la muestra es realizar la lectura de los datos. Para ello, vamos a cargar el conjunto de datos almacenado en el fichero 'titanic_all.csv' y comprobar que R interpreta correctamente los tipos de los datos.
+En primer lugar, para poder realizar cualquier análisis sobre el dataset 'Titanic', es necesario hacer la carga de los datos. Para ello, vamos a cargar el conjunto de datos almacenado en el fichero 'titanic_all.csv' y comprobar que R interpreta correctamente los tipos de los datos.
 
 ```{r, echo=TRUE}
 # Cargamos el fichero de datos
@@ -82,7 +82,7 @@ colSums(is.na(titanic_data))
 colSums(titanic_data=="")
 ```
 
-Vemos que en el...
+Vemos que existen valores perdidos en los atributos 'Age' y 'Embarked'. Para corregir la variable referente a la edad de los pasajeros, vamos a imputar los valores perdidos con la edad media de los valores presentes en la muestra. Los valores vacíos de la variable 'Embarked' los vamos a informar con el carácter 'U' referente a 'Unknown'.
 
 ```{r, echo=TRUE}
 # Sustituimos los valores vacíos de la variable 'Age' por la media
@@ -102,19 +102,59 @@ colSums(titanic_data=="")
 
 ## Valores extremos
 
+Después de corregir los valores perdidos, vamos a analizar la posible existencia de valores extremos dentro del conjunto de la muestra. De entre los atributos del conjunto de los datos, solamente 'Age' y 'Fare' podrían tener valores extremos ya que son las únicas variables numéricas. 
+
 ```{r,eval=TRUE,echo=TRUE}
-# Realizamos un diagrama de caja para comprobar si existen valores atípicos
+# Realizamos un diagrama de caja para comprobar si existen valores atípicos dentro de la variable 'Fare'
 boxplot(titanic_data$"Fare",main="Box plot", col="gray")
 ```
 
-Vemos que existe un valor extremo de 512,33. Reemplazamos este valor por la media del resto.
+Vemos que existe al menos un valor que excede notablemente al resto con un valor superior a 500. En el otro extremo, existe algún pasajero que no pagó por embarcarse en el Titanic. Esto valor podría ser un valor centinela, asociado a casos excepcionales en los que por desconocimiento se inserta algún valor atípico. Estos valores extremos, pueden tener un impacto significativo a la hora de realizar el análisis de los datos por lo que vamos a imputarlos. Vamos a reemplazar estos valores por la media del resto de precios pagados por los pasajeros.
 
 ```{r,eval=TRUE,echo=TRUE}
-# Reemplazamos el valor extremo en la variable 'Fare' por la media del resto
-mean_fare <- mean(titanic_data$Fare[titanic_data$Fare < 500])
+# Reemplazamos los valores extremo en la variable 'Fare' por la media del resto
+mean_fare <- mean(titanic_data$Fare[(titanic_data$Fare < 500) & (titanic_data$Fare != 0)])
 titanic_data$Fare[titanic_data$Fare > 500] <- mean_fare
+titanic_data$Fare[titanic_data$Fare == 0] <- mean_fare
 ```
 
+Una vez hemos corregido los valores extremos de la variable 'Fare', vamos a analizar la existencia de estos valores anómalos dentro del atributo 'Age'.
+
+```{r,eval=TRUE,echo=TRUE}
+# Realizamos un diagrama de caja para comprobar si existen valores atípicos dentro de la variable 'Age'
+boxplot(titanic_data$"Age",main="Box plot", col="gray")
+```
+
+Tal como podemos ver en el diagrama de caja anterior, no existen valores extremos. La edad mínima es un valor muy cercano a 0, lo que significa que en el transatlántico viajaba algún bebe mientras que la edad del pasajero más anciano era de 80 años.
+
+Por último, una vez que hemos imputado los valores perdidos y hemos eliminado los valores extremos que pudieran falsear los resultados obtenidos, vamos a convertir las variables a categóricas para facilitar los análisis posteriores.
+
+```{r,eval=TRUE,echo=TRUE}
+# Convertimos la variable 'Sex' a categórica
+titanic_data$Sex <- as.factor(titanic_data$Sex)
+
+# Convertimos la variable 'Survived' a categórica
+titanic_data$Survived <- as.factor(titanic_data$Survived)
+
+# Convertimos la variable 'Pclass' a categórica
+titanic_data$Pclass <- as.factor(titanic_data$Pclass)
+
+# Convertimos la variable 'SibSp' a categórica
+titanic_data$SibSp <- as.factor(titanic_data$SibSp)
+
+# Convertimos la variable 'Parch' a categórica
+titanic_data$Parch <- as.factor(titanic_data$Parch)
+
+# Convertimos la variable 'Embarked' a categórica
+titanic_data$Embarked <- as.factor(titanic_data$Embarked)
+```
+
+Extraemos unas estadísticas básicas del dataset para comprobar que todos los cambios se han realizado correctamente y que todas las variables tienen el tipo de dato correcto.
+
+```{r,eval=TRUE,echo=TRUE}
+#Estadísticas básicas
+summary(titanic_data)
+```
 
 ******
 # Análisis de los datos
