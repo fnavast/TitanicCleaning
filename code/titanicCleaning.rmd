@@ -241,9 +241,9 @@ for (i in 1:ncol(titanic_data)) {
     p_val = ad.test(titanic_data[,i])$p.value
     if (p_val < alpha) {
       cat(col.names[i])
-      # Format output
-      if (i < ncol(titanic_data) - 1) cat(", ")
-      if (i %% 3 == 0) cat("\n")
+      cat(": p-valor ")
+      cat(p_val)
+      cat("\n")
     }
   }
 }
