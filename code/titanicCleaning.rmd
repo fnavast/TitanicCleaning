@@ -250,6 +250,23 @@ for (i in 1:ncol(titanic_data)) {
 ```
 
 
+```{r,eval=TRUE,echo=TRUE}
+# Comparativa distribución variable 'Age' y normal
+library(ggplot2)
+
+ggplot(data = titanic_data, aes(x = Age)) +
+  geom_histogram(aes(y = ..density..)) +
+  stat_function(fun = dnorm, args = list(mean = mean(titanic_data$Age), sd = sd(titanic_data$Age))) +
+  ggtitle("Histograma con curva normal teórica") +
+  theme_bw()
+
+ggplot(data = titanic_data, aes(x = Fare)) +
+  geom_histogram(aes(y = ..density..)) +
+  stat_function(fun = dnorm, args = list(mean = mean(titanic_data$Fare), sd = sd(titanic_data$Fare))) +
+  ggtitle("Histograma con curva normal teórica") +
+  theme_bw()
+```
+
 ## Análisis estadístico del dataset
 
 xxxxxxxxx
