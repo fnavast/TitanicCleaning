@@ -292,7 +292,54 @@ En este caso, el resultado del test es un p-valor de 0.305. Al tratarse de un va
 
 ### Modelo de regresión lineal
 
+Como nuestra variable independiente supervivencia es dicotómica o binaria, debemos utilizar una regresión logistica. A continuación probaremos diferentes modelos, analizando la precisión de cada uno de ellos
 
+```{r,eval=TRUE,echo=TRUE}
+# Nos guardamos en variables adicionales tanto las variables dependientes como las variables independientes
+Survived <- titanic_data$Survived
+Pclass <- titanic_data$Pclass
+Sex <- titanic_data$Sex
+Age <- titanic_data$Age
+SibSp <- titanic_data$SibSp
+Parch <- titanic_data$Parch
+Cabin <- titanic_data$Cabin
+Embarked <- titanic_data$Embarked
+
+# Creamos a continuación 5 modelos de regresión logarítmica
+m1 <- glm(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Cabin + Embarked , data=titanic_data , family="binomial") 
+m2 <- glm(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare , data=titanic_data , family="binomial")
+m3 <- glm(Survived ~ Pclass + Sex + Age + Fare , data=titanic_data , family="binomial")
+m4 <- glm(Survived ~ Pclass + Sex , data=titanic_data , family="binomial")
+m5 <- glm(Survived ~ Age + Fare , data=titanic_data , family="binomial")
+
+# Representamos las medidas Akaike Information Criterion para evaluar la precisión de los modelos
+t.aic <- matrix(c(1, summary(m1)$aic,
+2, summary(m2)$aic,
+3, summary(m3)$aic,
+4, summary(m4)$aic,
+5, summary(m5)$aic),
+ncol = 2, byrow = TRUE)
+colnames(t.aic) <- c("MRL", "AIC")
+t.aic
+```
+Nos quedamos con el modelo de menor AIC. Sería el modelo 2, que tiene en cuenta todas las variables dependientes indicadas en apartados anteriores a excepción de la cabina y el puerto de embarque. Hemos decidido probar con diferntes modelos sin tener en cuenta estas dos variables ya que por lógica desde el punto de vista de la supervivencia no considerábamos muy relevante el puerto donde embarcó el pasajero y la cabina. Esta última variable porque está informada para muy pocos pasajeros.
+
+A continuación realizaremos una predicción con datos inventados para testear el poder predictivo de nuestro modelo seleccionado
+
+```{r,eval=TRUE,echo=TRUE}
+data <- data.frame(
+Pclass = "1",
+Sex = "male",
+Age = 15,
+SibSp = "1",
+Parch = "1",
+Fare= 500
+)
+
+predict(m2, data, type="response")
+
+```
+Observamos que para los datos introducidos tendríamos una probabilidad de sobrevivir al accidente del 61%.
 
 ### Contraste de hipótesis
 
