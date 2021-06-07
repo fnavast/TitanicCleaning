@@ -365,6 +365,15 @@ Obtenemos un p-valor inferior a nuestro coeficiente de significación del 0.05. 
 
 
 ******
+### Análisis de correlaciones
+
+A continuación analizaremos la correlación existente entre las dos variables cuantitativas (Age y Fare). Utilizamos el coeficiente de Spearman ya que los datos no siguen una distribución normal.
+
+```{r,eval=TRUE,echo=TRUE}
+cor.test(titanic_data$Age, titanic_data$Fare, method="spearman")
+```
+Vemos que el p-valor es significativo, y que el coeficiente de correlación está próximo a 0, por lo que podemos afirmar que estas variables tienen una correlación muy débil
+
 # Representación gráfica de los resultados
 ******
 xxxxxxxxxx
