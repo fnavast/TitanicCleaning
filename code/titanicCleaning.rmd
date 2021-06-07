@@ -290,13 +290,37 @@ En este caso, el resultado del test es un p-valor de 0.305. Al tratarse de un va
 
 ## Análisis estadístico del dataset
 
-xxxxxxxxx
+### Modelo de regresión lineal
+
+
+
+### Contraste de hipótesis
+
+A continuación evaluaremos si la edad o el precio del billete influyen sobre la supervivencia al accidente.
+
+Caso 1: Edad sobre la superviviencia. ¿Tienen mayor probabilidad de superviviencia las personas de menor edad?
+
+```{r,eval=TRUE,echo=TRUE}
+
+t.test(titanic_data.survived_yes$Age,titanic_data.survived_no$Age, 
+alternative = "less")
+```
+Obtenemos un p-valor inferior a nuestro coeficiente de significación del 0.05. Por tanto, rechazamos la hipótesis nula y afirmamos que la probabilidad de supervivencia será mayor cuanto menor sea la edad.
+
+Caso 2: Precio del billete sobre la supervivivencia.¿Tienen mayor probabilidad de superviviencia las personas que gozan de un billete más exclusivo?
+
+```{r,eval=TRUE,echo=TRUE}
+
+t.test(titanic_data.survived_no$Fare,titanic_data.survived_yes$Fare, 
+alternative = "less")
+```
+Obtenemos un p-valor inferior a nuestro coeficiente de significación del 0.05. Por tanto, rechazamos la hipótesis nula y afirmamos que la probabilidad de supervivencia será mayor cuanto mayor coste tenga el billete.
 
 
 ******
 # Representación gráfica de los resultados
 ******
-
+xxxxxxxxxx
 
 ******
 # Conclusiones
