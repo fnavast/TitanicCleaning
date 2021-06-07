@@ -14,8 +14,10 @@ El software contenido en el repositorio se trata de un proyecto de limpieza y an
 ## Descripción de los ficheros
 En el repositorio están almecenados los siguientes ficheros:
 * **code/titanicCleaning.rmd**: código fuente generado para la creación de un informe dinámico con los resultados del enunciado de la práctica. Esta codificado en lenguaje R.
-* **code/titanicCleaning.html**: informe de resultados generado a través de la compilación del fichero con extensión .rmd.
+* **code/titanicCleaning.html**: informe de resultados generado a través de la compilación del fichero con extensión .rmd que contiene las respuestas a las preguntas del enunciado.
+* **code/titanicCleaning.pdf**: informe de resultados generado a través de la compilación del fichero con extensión .rmd que contiene las respuestas a las preguntas del enunciado.
 * **data/titanic_train.csv**: dataset que contiene la información referente a los pasajeros del Titanic.
+* **README.md**: wiki del repositorio de git.
 
 ## Dataset
 Se trata de un dataset publico y accesible desde la siguiente página web:

@@ -14,6 +14,7 @@ output:
     toc_depth: 2
   pdf_document:
     toc: yes
+    number_sections: yes
     toc_depth: '2'
 ---
 
@@ -26,27 +27,27 @@ library(dplyr)
 # Introducción
 ******
 
-En esta segunda práctica de la asignatura de Tipología y ciclo de vida de los datos, vamos a tratar de limpiar y analizar los datos contenidos en el dataset 'titanic.csv'. Este dataset contiene información sobre sobre los pasajeros que abordaron en el titanic desde los diferentes puertos en los que atracó.
+En esta segunda práctica de la asignatura de Tipología y ciclo de vida de los datos, vamos a tratar de limpiar y analizar los datos contenidos en el dataset 'titanic.csv'. Este dataset contiene información sobre sobre los pasajeros que abordaron en el Titanic desde los diferentes puertos en los que atracó.
 
 
 ******
 # Descripción del dataset. ¿Por qué es importante y qué pregunta/problema pretende responder?
 ******
 
-El dataset elegido comprende información sobre el naufragio del Titanic, que nos permite conocer según una serie de características de los pasajeros que veremos a continuación si sobrevivió o no al accidente. El dataset costa de 891 ocurrencias para un total de 12 variables y lo hemos obtenido de la web de kaggle (https://www.kaggle.com/c/titanic).
+El dataset elegido contiene información sobre el naufragio del Titanic. Estos datos nos permiten conocer, según una serie de características de los pasajeros que veremos a continuación, si el pasajero sobrevivió o no al accidente. El dataset costa de 891 ocurrencias para un total de 12 variables y lo hemos obtenido de la web de kaggle (https://www.kaggle.com/c/titanic).
 
 Las variables contenidas en el dataset son las siguientes:
 
 * PassengerId: identificador numérico del pasajero que embarcó en el Titanic
 * Survived: Indicador de si el pasajero sobrevivió al accidente del Titanic. 
-  + El valor “0” se corresponde con que “No” sobrevivió.
-  + El valor “1” corresponde con que “Sí” sobrevivió.
+  + 0: el pasajero no sobrevivió al accidente.
+  + 1: el pasajero si sobrevivió al accidente.
 * Pclass: Indicador del tipo de billete del pasajero. 
-  + 1 = Primera clase
-  + 2 = Segunda clase
-  + 3 = Tercera clase
-* Name: nombre del pasajero, con el formato “Apellido, Nombre”
-* Sex: sexo del pasajero. Los posibles valores son “male” y “female”.
+  + 1: Primera clase.
+  + 2: Segunda clase.
+  + 3: Tercera clase.
+* Name: nombre del pasajero, con el formato 'Apellido, Nombre'.
+* Sex: sexo del pasajero. Los posibles valores son 'male' y 'female'.
 * Age: edad del pasajero.
 * SibSp: número de hermanos/cónyuge del pasajero a bordo.
 * Parch: número de padres/hijos del pasajero a bordo.
@@ -54,11 +55,11 @@ Las variables contenidas en el dataset son las siguientes:
 * Fare: precio del billete
 * Cabin: identificador del camarote del pasajero.
 * Embarked: puerto en el que embarcó el pasajero:
-  + C = Cherbourg
-  + Q = Queenstown
-  + S = Southampton
+  + C: Cherbourg
+  + Q: Queenstown
+  + S: Southampton
 
-El problema que tenemos como objetivo dar solución mediante el análisis de este dataset es ver qué variables del dataset tienen mayor influencia sobre el evento de supervivencia del pasajero durante el conocido accidente del crucero Titanic. Con esta solución, podremos crear modelos predictivos que nos permitan conocer dependiendo de las características de un hipotético pasajero cuál es la probabilidad de que hubiese sobrevivido al accidente. Esta información no sólo es interesante desde un punto de vista “curioso” sobre este accidente que ocurrió años atrás, sino que desde el punto de vista proyectivo puede ayudar al conocimiento de ingenieros navales para mejorar en el diseño y construcción de grandes transatlánticos que sean más seguros en accidentes de índole similar como alcances de grandes objetos sobre buques.
+Con toda la información contenida en el conjunto de la muestra, tenemos como objetivo dar respuesta a qué variables del dataset tienen mayor influencia sobre la supervivencia del pasajero durante el conocido accidente del crucero Titanic. Con esta solución, podremos crear modelos predictivos que nos permitan conocer, dependiendo de las características de un hipotético pasajero, cuál es la probabilidad de que hubiese sobrevivido al accidente. Esta información no sólo es interesante desde un punto de vista 'curioso' sobre el accidente que ocurrió años atrás, sino que desde el punto de vista proyectivo puede ayudar al conocimiento de ingenieros navales para mejorar en el diseño y construcción de grandes transatlánticos que sean más seguros en accidentes de índole similar como alcances de grandes objetos sobre buques.
 
 
 
@@ -66,23 +67,21 @@ El problema que tenemos como objetivo dar solución mediante el análisis de est
 # Integración y selección de los datos de interés a analizar
 ******
 
-Desde el punto de vista de la integración nos hemos encontrado que en la fuente tenemos separado en dos ficheros independientes este dataset (uno para entrenamiento y otro para set), ya que está preparado para la ejecución de modelos. Por tanto, como primer paso y con el objetivo de disponer de la totalidad de muestras para el análisis que estamos realizando, hemos realizado una concatenación de las ocurrencias de ambos datasets.
+En primer lugar, cabe mencionar que el datset se encuentra dividido en dos ficheros, existe un fichero de entrenamiento y otro de testeo. El dataset está preparado para la ejecución de modelos. Por tanto, ya que nosotros no vamos a generar ningún modelo capaz de predecir la supervivencia de los pasajeros, solo vamos a utilizar el fichero de entrenamiento ya que tiene informado el atributo referente a la supervivencia.
 
-Desde el punto de vista de la selección descartamos aplicar cualquier técnica de filtrado porque nos interesa realizar el análisis sobre el conjunto entero de ocurrencias, sin discriminar cualquier tipo de muestra dentro del dataset. Por otro lado, no disponemos de ninguna variable que proceda de algún cálculo sobre otras, ni vemos relevante poder realizar cálculo alguno sobre más de una variable del dataset para intentar reducir el número de atributos sin que afecte en la representatividad de todas las variables en conjunto.
+Desde el punto de vista de la selección de atributos, descartamos aplicar cualquier técnica de filtrado ya que nos interesa realizar el análisis sobre el conjunto entero de ocurrencias. No vamos a discriminar ningún tipo de muestra dentro del dataset. 
 
-Basado en el análisis del total de atributos, si que vemos relevante descartar las variables PassengerId, Name y Ticket, puesto que son identificadores o descriptivos propios de cada uno de los pasajeros pero que no nos van a ayudar al análisis que nos compete puesto que el valor de cada uno de estos atributos no presenta ningún tipo de agrupación sobre todos los demás.
+Por otro lado, no disponemos de ninguna variable que proceda de algún cálculo sobre otras, ni vemos relevante poder realizar cálculo alguno sobre más de una variable del dataset para intentar reducir el número de atributos sin que afecte en la representatividad de todas las variables en conjunto.
 
-Por último, vamos a realizar un análisis sobre al correlación que existe entre todo el monto resultante de variables con el objetivo de descartar algunas de ellas en el caso de que nos encontremos con un elevado índice de correlación.
+Basado en el análisis del total de atributos, si que vemos relevante descartar las variables PassengerId, Name y Ticket, puesto que son identificadores o descriptivos propios de cada uno de los pasajeros pero que no nos van a ayudar al análisis que nos compete, puesto que el valor de cada uno de estos atributos no presenta ningún tipo de agrupación sobre todos los demás.
 
-
-¿Borrar campo Cabin?
 
 
 ******
 # Limpieza de los datos
 ******
 
-En primer lugar, para poder realizar cualquier análisis sobre el dataset 'Titanic', es necesario hacer la carga de los datos. Para ello, vamos a cargar el conjunto de datos almacenado en el fichero 'titanic_all.csv' y comprobar que R interpreta correctamente los tipos de los datos.
+El primer paso para poder realizar cualquier análisis sobre el dataset 'Titanic', es hacer la carga de los datos. Para ello, vamos a cargar el conjunto de datos almacenado en el fichero 'titanic_all.csv' y comprobar que R interpreta correctamente los tipos de los datos.
 
 ```{r, echo=TRUE}
 # Cargamos el fichero de datos
@@ -98,7 +97,7 @@ str(titanic_data)
 summary(titanic_data)
 ```
 
-Podemos ver que el dataset está compuesto por 1309 registros y 12 variables. En el apartado anterior, vimos que los atributos 'PassengerId', 'Name' y 'Ticket' no son relevantes de cara a nuestro estudio por lo que vamos a eliminarlos de la muestra.
+Podemos ver que el dataset está compuesto por 891 registros y 12 variables. En el apartado anterior, vimos que los atributos 'PassengerId', 'Name' y 'Ticket' no son relevantes de cara a nuestro estudio por lo que vamos a eliminarlos de la muestra.
 
 ```{r, echo=TRUE}
 # Seleccionamos las variables relevantes
@@ -117,14 +116,15 @@ colSums(is.na(titanic_data))
 colSums(titanic_data=="")
 ```
 
-Vemos que existen valores perdidos en los atributos 'Age' y 'Embarked'. Para corregir la variable referente a la edad de los pasajeros, vamos a imputar los valores perdidos con la edad media de los valores presentes en la muestra. Los valores vacíos de la variable 'Embarked' los vamos a informar con el carácter 'U' referente a 'Unknown'.
+Vemos que existen valores perdidos en los atributos 'Age', 'Embarked' y 'Cabin'. Para corregir la variable referente a la edad de los pasajeros, vamos a imputar los valores perdidos con la edad media de los valores presentes en la muestra. Los valores vacíos de las variables 'Embarked' y 'Cabin' los vamos a informar con el carácter 'U' referente a 'Unknown'.
 
 ```{r, echo=TRUE}
 # Sustituimos los valores vacíos de la variable 'Age' por la media
 titanic_data$Age[is.na(titanic_data$Age)] <- mean(titanic_data$Age,na.rm=T)
 
-# Sustituimos los valores vacíos de la variable 'Embarked' por el valor U (unknown)
+# Sustituimos los valores vacíos de las variable 'Embarked' y 'Cabin' por el valor U (unknown)
 titanic_data$Embarked[titanic_data$Embarked==""]="U"
+titanic_data$Cabin[titanic_data$Cabin==""]="U"
 ```
 
 Comprobamos que se han corregido los valores perdidos.
@@ -137,7 +137,7 @@ colSums(titanic_data=="")
 
 ## Valores extremos
 
-Después de corregir los valores perdidos, vamos a analizar la posible existencia de valores extremos dentro del conjunto de la muestra. De entre los atributos del conjunto de los datos, solamente 'Age' y 'Fare' podrían tener valores extremos ya que son las únicas variables numéricas. 
+Después de corregir los valores perdidos, vamos a analizar la posible existencia de valores extremos dentro del conjunto de la muestra. De entre los atributos del conjunto de los datos, solamente 'Age' y 'Fare' podrían tener valores extremos ya que son las únicas variables numéricas. Para ello, vamos a representar un diagrama de caja que nos permita identificar los posibles valores extremos.
 
 ```{r,eval=TRUE,echo=TRUE}
 # Realizamos un diagrama de caja para comprobar si existen valores atípicos dentro de la variable 'Fare'
@@ -248,9 +248,9 @@ for (i in 1:ncol(titanic_data)) {
 }
 ```
 
-Podemos ver como las variables Age y Fare tiene un p-valor de 3.7e-24. Este valor es muy inferior al valor alfa definido previamente por lo que podemos afirmar que no siguen una distribución normal.
+Podemos ver como las variables 'Age' y 'Fare' tiene un p-valor de 3.7e-24. Este valor es muy inferior al valor alfa definido previamente por lo que podemos afirmar que no siguen una distribución normal.
 
-Depués de haber analizado la normalidad de las variables, vamos a estudiar la homogeneidad de la varianza a través del método Fligner-Killeen. Para ello, vamos a realizar las siguientes pruebas:
+Después de haber analizado la normalidad de las variables, vamos a estudiar la homogeneidad de la varianza utilizando el método Fligner-Killeen a través de las siguientes pruebas:
 
 * Estudio de la homogeneidad del precio del billete en función del sexo del pasajero. Para ello, vamos a establecer la hipótesis nula de que ambas varianzas son iguales.
 
@@ -259,16 +259,16 @@ Depués de haber analizado la normalidad de las variables, vamos a estudiar la h
 fligner.test(Fare ~ Sex, data=titanic_data)
 ```
 
-El resultado del test da un p-valor de 3.663e-12. Este valor es es muy inferior a 0.05 por lo que rechazamos la hipótesis nula confirmando que ambas varianzas son diferentes.
+El resultado de la prueba da un p-valor de 3.663e-12. Este valor es muy inferior a 0.05 por lo que rechazamos la hipótesis nula confirmando que ambas varianzas son diferentes.
 
-* Estudio de la homogeneidad del precio del billete en función de si el pasajero sovrevivió al accidente. Para ello, vamos a establecer la hipótesis nula de que ambas varianzas son iguales.
+* Estudio de la homogeneidad del precio del billete en función de si el pasajero sobrevivió al accidente. Para realizar el estudio, vamos a establecer la hipótesis nula de que ambas varianzas son iguales.
 
 ```{r,eval=TRUE,echo=TRUE}
-# Estudio de la homogeneidad del precio del billete en función de si el pasajero sovrevivió al accidente
+# Estudio de la homogeneidad del precio del billete en función de si el pasajero sobrevivió al accidente
 fligner.test(Fare ~ Survived, data=titanic_data)
 ```
 
-El p-valor obtenido al realizar el test es menor que 2.2e-16, por lo que al ser menor que 0.05 rechazamos la hipótesis nula. Es decir, las varianzas de ambos campos no son iguales.
+El p-valor obtenido al realizar la prueba es menor que 2.2e-16, por lo que al ser menor que 0.05 rechazamos la hipótesis nula. Es decir, las varianzas de ambos campos no son iguales.
 
 * Estudio de la homogeneidad de la edad del pasajero en función de la clase en la que viajaba. Para ello, vamos a establecer la hipótesis nula de que ambas varianzas son iguales.
 
@@ -277,22 +277,22 @@ El p-valor obtenido al realizar el test es menor que 2.2e-16, por lo que al ser 
 fligner.test(Age ~ Pclass, data=titanic_data)
 ```
 
-El resultado del test es un p-valor igual a 2.55e-08. Dado que este valor es inferior a 0.05, podemos afirmar que la hipótesis nula no es correcta confirmando que la varianza de las dos variables no son iguales.
+El resultado del análisis es un p-valor igual a 2.55e-08. Dado que este valor es inferior a 0.05, podemos afirmar que la hipótesis nula no es correcta confirmando que la varianza de las dos variables no es igual.
 
-* Estudio de la homogeneidad de la edad del pasajero en función de su sexo. Para ello, vamos a establecer la hipótesis nula de que ambas varianzas son iguales.
+* Estudio de la homogeneidad de la edad del pasajero en función de su sexo. Para realizar este análisis vamos a establecer la hipótesis nula de que ambas varianzas son iguales.
 
 ```{r,eval=TRUE,echo=TRUE}
 # Estudio de la homogeneidad de la edad del pasajero en función de su sexo
 fligner.test(Age ~ Sex, data=titanic_data)
 ```
 
-En este caso, el resultado del test es un p-valor de 0.305. Al tratarse de un valor superior a 0.05 podemos afirmar que la hipotesis nula es correcta, confirmando que la varianza de ambas variableses igual.
+En este caso, el resultado del test es un p-valor de 0.305. Al tratarse de un valor superior a 0.05 podemos afirmar que la hipótesis nula es correcta, confirmando que la varianza de ambas variables es igual.
 
 ## Análisis estadístico del dataset
 
 ### Modelo de regresión lineal
 
-Como nuestra variable independiente supervivencia es dicotómica o binaria, debemos utilizar una regresión logistica. A continuación probaremos diferentes modelos, analizando la precisión de cada uno de ellos
+Como nuestra variable independiente supervivencia es dicotómica o binaria, debemos utilizar una regresión logística. A continuación, probaremos diferentes modelos, analizando la precisión de cada uno de ellos:
 
 ```{r,eval=TRUE,echo=TRUE}
 # Nos guardamos en variables adicionales tanto las variables dependientes como las variables independientes
@@ -312,7 +312,6 @@ m3 <- glm(Survived ~ Pclass + Sex + Age + Fare , data=titanic_data , family="bin
 m4 <- glm(Survived ~ Pclass + Sex , data=titanic_data , family="binomial")
 m5 <- glm(Survived ~ Age + Fare , data=titanic_data , family="binomial")
 
-
 # Representamos las medidas Akaike Information Criterion para evaluar la precisión de los modelos
 t.aic <- matrix(c(1, summary(m1)$aic,
 2, summary(m2)$aic,
@@ -323,18 +322,21 @@ ncol = 2, byrow = TRUE)
 colnames(t.aic) <- c("MRL", "AIC")
 t.aic
 ```
-Nos quedamos con el modelo de menor AIC. Sería el modelo 2, que tiene en cuenta todas las variables dependientes indicadas en apartados anteriores a excepción de la cabina y el puerto de embarque. Hemos decidido probar con diferntes modelos sin tener en cuenta estas dos variables ya que por lógica desde el punto de vista de la supervivencia no considerábamos muy relevante el puerto donde embarcó el pasajero y la cabina. Esta última variable porque está informada para muy pocos pasajeros.
 
-A continuación, interpretamos los resultados de la regresión
+Nos quedamos con el modelo de menor AIC. Sería el modelo 2, que tiene en cuenta todas las variables dependientes indicadas en apartados anteriores a excepción de la cabina y el puerto de embarque. Hemos decidido probar con diferentes modelos sin tener en cuenta estas dos variables ya que por lógica desde el punto de vista de la supervivencia no considerábamos muy relevante el puerto donde embarcó el pasajero y la cabina. Esta última variable porque está informada para muy pocos pasajeros.
+
+A continuación, interpretamos los resultados de la regresión:
 
 ```{r,eval=TRUE,echo=TRUE}
 summary(m2)
 ```
-Lo primero que observamos es ue las variables que tienen un nivel de significancia inferior al 0.05 son Pclass, Sex, Age y algunos valores de SibSp1. A continuación, observando el signo de los coeficientes vemos que tanto para la clase, el sexo y la edad tiene signo negativo. Esto quiere decir que a valores constantes del resto de variables, si aumentamos el valor de estas (las categóricas en su escala), la probabilidad de supervivencia disminuye. A mayor edad menor supervivencia, si se trata de un hombre menor superviviencia y por último, a menor clase menor superviviencia.
 
-A continuación realizaremos una predicción con datos inventados para testear el poder predictivo de nuestro modelo seleccionado
+Lo primero que observamos es que las variables que tienen un nivel de significancia inferior al 0.05 son 'Pclass', 'Sex', 'Age' y algunos valores de 'SibSp1'. A continuación, observando el signo de los coeficientes vemos que tanto para la clase, el sexo y la edad tiene signo negativo. Esto quiere decir que, a valores constantes del resto de variables, si aumentamos el valor de estas (las categóricas en su escala), la probabilidad de supervivencia disminuye. A mayor edad menor supervivencia, si se trata de un hombre menor supervivencia y por último, a menor clase menor supervivencia.
+
+A continuación, vamos a realizar una simulación de predicción de la supervivencia a través de unos datos inventados. De esta forma, vamos a testear el poder predictivo de nuestro modelo seleccionado.
 
 ```{r,eval=TRUE,echo=TRUE}
+# Datos inventados para realizar testeo
 data <- data.frame(
 Pclass = "1",
 Sex = "female",
@@ -345,45 +347,50 @@ Fare= 500
 )
 
 predict(m2, data, type="response")
-
 ```
+
 Observamos que para los datos introducidos tendríamos una probabilidad de sobrevivir al accidente del 96%.
 
 ### Contraste de hipótesis
 
 A continuación evaluaremos si la edad o el precio del billete influyen sobre la supervivencia al accidente.
 
-Caso 1: Edad sobre la superviviencia. ¿Tienen mayor probabilidad de superviviencia las personas de menor edad?
+#### Caso 1: Edad sobre la superviviencia. ¿Tienen mayor probabilidad de superviviencia las personas de menor edad?
 
 ```{r,eval=TRUE,echo=TRUE}
-
 t.test(titanic_data.survived_yes$Age,titanic_data.survived_no$Age, 
 alternative = "less")
 ```
+
 Obtenemos un p-valor inferior a nuestro coeficiente de significación del 0.05. Por tanto, rechazamos la hipótesis nula y afirmamos que la probabilidad de supervivencia será mayor cuanto menor sea la edad.
 
-Caso 2: Precio del billete sobre la supervivivencia.¿Tienen mayor probabilidad de superviviencia las personas que gozan de un billete más exclusivo?
+
+#### Caso 2: Precio del billete sobre la supervivivencia.¿Tienen mayor probabilidad de superviviencia las personas que gozan de un billete más exclusivo?
 
 ```{r,eval=TRUE,echo=TRUE}
-
 t.test(titanic_data.survived_no$Fare,titanic_data.survived_yes$Fare, 
 alternative = "less")
 ```
+
 Obtenemos un p-valor inferior a nuestro coeficiente de significación del 0.05. Por tanto, rechazamos la hipótesis nula y afirmamos que la probabilidad de supervivencia será mayor cuanto mayor coste tenga el billete.
 
 
-******
 ### Análisis de correlaciones
 
-A continuación analizaremos la correlación existente entre las dos variables cuantitativas (Age y Fare). Utilizamos el coeficiente de Spearman ya que los datos no siguen una distribución normal.
+A continuación, vamos a analizar la correlación existente entre las dos variables cuantitativas (Age y Fare). Para ello, vamos a utilizar el coeficiente de Spearman ya que los datos no siguen una distribución normal.
 
 ```{r,eval=TRUE,echo=TRUE}
 cor.test(titanic_data$Age, titanic_data$Fare, method="spearman")
 ```
-Vemos que el p-valor es significativo, y que el coeficiente de correlación está próximo a 0, por lo que podemos afirmar que estas variables tienen una correlación muy débil
 
+Vemos que el p-valor es significativo, y que el coeficiente de correlación está próximo a 0, por lo que podemos afirmar que estas variables tienen una correlación muy débil.
+
+
+
+******
 # Representación gráfica de los resultados
 ******
+
 A continuación y con el objetivo de reforzar la información que hemos analizado en los pasos anteriores, haremos uso de visualizaciones mediante gráficos de barras e histogramas sobre la variable dependiente y las variables independientes más influyentes.
 
 ```{r,eval=TRUE,echo=TRUE}
@@ -399,16 +406,29 @@ ggplot(data = titanic_data,aes(y=Pclass,fill=Survived))+geom_bar(position="fill"
 ggplot(data = titanic_data,aes(x=Age,fill=Survived))+geom_histogram()
 
 ```
+
+
 ******
 # Conclusiones
 ******
 
-Observamos mediante las representaciones gráficas mostradas en el apartado anterior que:
-  - Si eres mujer tienens mayores probabilidad de supervivencia
-  - Cuanto mayor sea la clase del billete, mayor probabilidad de superviviencia
-  - En general, cuanto más joven, mayor probabilidad de superviviencia
+En base a los resultados obtenidos durante todo el análisis de los datos contenidos en el dataset, hemos observado que:
+
+* Las mujeres tuvieron mayor índice de supervivencia tras el accidente, por lo que ser de este sexo implica tener mayor probabilidad de sobrevivir.
+* La clase en la que viajaban los pasajeros tiene una relación directa con la supervivencia de la persona. De esta forma, cuanto mayor sea la clase del billete, mayor probabilidad de supervivencia.
+* Otro aspecto destacable es el relacionado con la edad, las personas jóvenes tuvieron mayor supervivencia tras el impacto con el iceberg. Es decir, cuanto más joven, mayor probabilidad de supervivencia.
 
 
 
+******
+# Contribuciones al trabajo
+******
 
+En la siguiente tabla se detallan los nombres de las personas que han participado en el desarrollo de las tareas de análisis y limpieza de los datos, así como en la elaboración de las respuestas a las preguntas planteadas en el enunciado de la actividad y contenidas en el este fichero pdf.
+
+Contribuciones              | Firma
+----------------------------|------------
+Investigación previa        | FBNT y AFD
+Redacción de las respuestas | FBNT y AFD
+Desarrollo código           | FBNT y AFD
 
