@@ -312,6 +312,7 @@ m3 <- glm(Survived ~ Pclass + Sex + Age + Fare , data=titanic_data , family="bin
 m4 <- glm(Survived ~ Pclass + Sex , data=titanic_data , family="binomial")
 m5 <- glm(Survived ~ Age + Fare , data=titanic_data , family="binomial")
 
+
 # Representamos las medidas Akaike Information Criterion para evaluar la precisión de los modelos
 t.aic <- matrix(c(1, summary(m1)$aic,
 2, summary(m2)$aic,
@@ -324,12 +325,19 @@ t.aic
 ```
 Nos quedamos con el modelo de menor AIC. Sería el modelo 2, que tiene en cuenta todas las variables dependientes indicadas en apartados anteriores a excepción de la cabina y el puerto de embarque. Hemos decidido probar con diferntes modelos sin tener en cuenta estas dos variables ya que por lógica desde el punto de vista de la supervivencia no considerábamos muy relevante el puerto donde embarcó el pasajero y la cabina. Esta última variable porque está informada para muy pocos pasajeros.
 
+A continuación, interpretamos los resultados de la regresión
+
+```{r,eval=TRUE,echo=TRUE}
+summary(m2)
+```
+Lo primero que observamos es ue las variables que tienen un nivel de significancia inferior al 0.05 son Pclass, Sex, Age y algunos valores de SibSp1. A continuación, observando el signo de los coeficientes vemos que tanto para la clase, el sexo y la edad tiene signo negativo. Esto quiere decir que a valores constantes del resto de variables, si aumentamos el valor de estas (las categóricas en su escala), la probabilidad de supervivencia disminuye. A mayor edad menor supervivencia, si se trata de un hombre menor superviviencia y por último, a menor clase menor superviviencia.
+
 A continuación realizaremos una predicción con datos inventados para testear el poder predictivo de nuestro modelo seleccionado
 
 ```{r,eval=TRUE,echo=TRUE}
 data <- data.frame(
 Pclass = "1",
-Sex = "male",
+Sex = "female",
 Age = 15,
 SibSp = "1",
 Parch = "1",
@@ -339,7 +347,7 @@ Fare= 500
 predict(m2, data, type="response")
 
 ```
-Observamos que para los datos introducidos tendríamos una probabilidad de sobrevivir al accidente del 61%.
+Observamos que para los datos introducidos tendríamos una probabilidad de sobrevivir al accidente del 96%.
 
 ### Contraste de hipótesis
 
