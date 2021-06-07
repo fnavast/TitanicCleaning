@@ -384,6 +384,8 @@ Vemos que el p-valor es significativo, y que el coeficiente de correlación est�
 
 # Representación gráfica de los resultados
 ******
+A continuación y con el objetivo de reforzar la información que hemos analizado en los pasos anteriores, haremos uso de visualizaciones mediante gráficos de barras e histogramas sobre la variable dependiente y las variables independientes más influyentes.
+
 ```{r,eval=TRUE,echo=TRUE}
 library(ggplot2)
 
@@ -397,13 +399,14 @@ ggplot(data = titanic_data,aes(y=Pclass,fill=Survived))+geom_bar(position="fill"
 ggplot(data = titanic_data,aes(x=Age,fill=Survived))+geom_histogram()
 
 ```
-Diagrama de barras clase superviviencia
-Diagrama de barras edad superviviencia
 ******
 # Conclusiones
 ******
 
-xxxxxxxxxxx
+Observamos mediante las representaciones gráficas mostradas en el apartado anterior que:
+  - Si eres mujer tienens mayores probabilidad de supervivencia
+  - Cuanto mayor sea la clase del billete, mayor probabilidad de superviviencia
+  - En general, cuanto más joven, mayor probabilidad de superviviencia
 
 
 
