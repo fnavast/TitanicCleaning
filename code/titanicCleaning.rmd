@@ -384,8 +384,21 @@ Vemos que el p-valor es significativo, y que el coeficiente de correlación est�
 
 # Representación gráfica de los resultados
 ******
-xxxxxxxxxx
+```{r,eval=TRUE,echo=TRUE}
+library(ggplot2)
 
+# Diagrama de barras sexo-superviencia
+ggplot(data = titanic_data,aes(y=Sex,fill=Survived))+geom_bar(position="fill")+xlab("Frecuencia")
+
+# Diagrama de barras clase-superviviencia
+ggplot(data = titanic_data,aes(y=Pclass,fill=Survived))+geom_bar(position="fill")+xlab("Frecuencia")
+
+# Histograma edad-superviviencia
+ggplot(data = titanic_data,aes(x=Age,fill=Survived))+geom_histogram()
+
+```
+Diagrama de barras clase superviviencia
+Diagrama de barras edad superviviencia
 ******
 # Conclusiones
 ******
