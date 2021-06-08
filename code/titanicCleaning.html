@@ -841,7 +841,8 @@ predict(m2, data, type=&quot;response&quot;)</code></pre>
 <h3><span class="header-section-number">5.3.2</span> Contraste de hipótesis</h3>
 <p>A continuación evaluaremos si la edad o el precio del billete influyen sobre la supervivencia al accidente.</p>
 <div id="caso-1-edad-sobre-la-superviviencia.-tienen-mayor-probabilidad-de-superviviencia-las-personas-de-menor-edad" class="section level4">
-<h4><span class="header-section-number">5.3.2.1</span> Caso 1: Edad sobre la superviviencia. ¿Tienen mayor probabilidad de superviviencia las personas de menor edad?</h4>
+<h4><span class="header-section-number">5.3.2.1</span> Caso 1: Edad sobre la superviviencia. ¿Tienen mayor probabilidad de superviviencia las personas de menor edad? <br /></h4>
+<p>Vamos a realizar un primer caso de estudio en el que vamos a tratar de relacionar la influencia que tiene la edad con la supervivencia del pasajero.</p>
 <pre class="r"><code>t.test(titanic_data.survived_yes$Age,titanic_data.survived_no$Age, 
 alternative = &quot;less&quot;)</code></pre>
 <pre><code>## 
@@ -858,7 +859,8 @@ alternative = &quot;less&quot;)</code></pre>
 <p>Obtenemos un p-valor inferior a nuestro coeficiente de significación del 0.05. Por tanto, rechazamos la hipótesis nula y afirmamos que la probabilidad de supervivencia será mayor cuanto menor sea la edad.</p>
 </div>
 <div id="caso-2-precio-del-billete-sobre-la-supervivivencia.tienen-mayor-probabilidad-de-superviviencia-las-personas-que-gozan-de-un-billete-más-exclusivo" class="section level4">
-<h4><span class="header-section-number">5.3.2.2</span> Caso 2: Precio del billete sobre la supervivivencia.¿Tienen mayor probabilidad de superviviencia las personas que gozan de un billete más exclusivo?</h4>
+<h4><span class="header-section-number">5.3.2.2</span> Caso 2: Precio del billete sobre la supervivivencia.¿Tienen mayor probabilidad de superviviencia las personas que gozan de un billete más exclusivo? <br /></h4>
+<p>Después de comprobar como la edad sí que influyó en la supervivencia de los pasajeros, vamos a analizar si las personas con mayor nivel adquisitivo tuvieron mayor o menor tasa de supervivencia después del accidente.</p>
 <pre class="r"><code>t.test(titanic_data.survived_no$Fare,titanic_data.survived_yes$Fare, 
 alternative = &quot;less&quot;)</code></pre>
 <pre><code>## 

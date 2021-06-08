@@ -355,7 +355,9 @@ Observamos que para los datos introducidos tendríamos una probabilidad de sobre
 
 A continuación evaluaremos si la edad o el precio del billete influyen sobre la supervivencia al accidente.
 
-#### Caso 1: Edad sobre la superviviencia. ¿Tienen mayor probabilidad de superviviencia las personas de menor edad?
+#### Caso 1: Edad sobre la superviviencia. ¿Tienen mayor probabilidad de superviviencia las personas de menor edad? <br />
+
+Vamos a realizar un primer caso de estudio en el que vamos a tratar de relacionar la influencia que tiene la edad con la supervivencia del pasajero.
 
 ```{r,eval=TRUE,echo=TRUE}
 t.test(titanic_data.survived_yes$Age,titanic_data.survived_no$Age, 
@@ -365,7 +367,9 @@ alternative = "less")
 Obtenemos un p-valor inferior a nuestro coeficiente de significación del 0.05. Por tanto, rechazamos la hipótesis nula y afirmamos que la probabilidad de supervivencia será mayor cuanto menor sea la edad.
 
 
-#### Caso 2: Precio del billete sobre la supervivivencia.¿Tienen mayor probabilidad de superviviencia las personas que gozan de un billete más exclusivo?
+#### Caso 2: Precio del billete sobre la supervivivencia.¿Tienen mayor probabilidad de superviviencia las personas que gozan de un billete más exclusivo? <br />
+
+Después de comprobar como la edad sí que influyó en la supervivencia de los pasajeros, vamos a analizar si las personas con mayor nivel adquisitivo tuvieron mayor o menor tasa de supervivencia después del accidente.
 
 ```{r,eval=TRUE,echo=TRUE}
 t.test(titanic_data.survived_no$Fare,titanic_data.survived_yes$Fare, 
